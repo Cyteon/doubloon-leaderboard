@@ -35,15 +35,15 @@
 
 <div class="flex flex-col w-full h-screen bg-base">
     <h1 class="mx-auto mt-2 p-2 text-center flex">
-        <img src="/doubloon.png" class="inline-block" alt="Doubloon" height="96" width="96">
-        <span class="mr-1 flex flex-col my-auto">
+        <img src="/doubloon.png" class="inline-block" alt="Doubloon" height="72" width="72">
+        <span class="ml-2 flex flex-col my-auto">
             <span class="text-6xl font-bold">Doubloons</span>
             <span class="text-start text-sm ml-1 text-muted">(actual doubloon data)</span>
         </span>
     </h1>
 
     <div class="p-3 shadow-md rounded-lg mx-auto mt-4 mb-8 mx-2 md:mx-8 h-full bg-surface">
-        <div class="flex">
+        <div class="flex flex-col md:flex-row">
             <h2 class="text-4xl font-semibold">Leaderboard</h2>
             <div class="ml-auto flex">
                 <input 
@@ -67,28 +67,28 @@
         </div>
 
         {#if searched}
-            <div class="flex p-2 border-b border-muted bg-yellow/10 rounded-tl-md rounded-tr-md mt-2">
-                <p class="text-2xl my-auto font-semibold mr-2">#{data.indexOf(searched) + 1} - </p>
+            <div class="flex p-2 bg-yellow/10 rounded-tl-md rounded-tr-md mt-2">
+                <p class="text-2xl my-auto font-semibold mr-6">#{data.indexOf(searched) + 1}</p>
 
                 <img src={searched.pfp} class="rounded-full" height="48" width="48" alt="profile" />
-                <h1 class="text-2xl my-auto font-semibold ml-2">@{searched.username}</h1>
-                <p class="ml-auto text-2xl my-auto font-semibold">
-                    {searched.doubloons}
-                    <img src="/doubloon.png" class="inline-block" alt="Doubloon" height="28" width="28">
+                <h1 class="text-2xl my-auto font-semibold ml-2 mr-10">@{searched.username}</h1>
+                <p class="ml-auto text-2xl my-auto font-semibold flex">
+                    <span class="my-auto mr-1">{searched.doubloons}</span>
+                    <img src="/doubloon.png" class="inline-block" alt="Doubloon" height="24" width="24">
                 </p>
             </div>
         {/if}
 
         {#each data as user, i}
             {#if user != searched}
-                <div class={`flex p-2 ${i == data.length - 1 ? '' : 'border-b border-b-border'}`}>
-                    <p class="text-2xl my-auto font-semibold mr-2">#{i + 1} - </p>
+                <div class={`flex p-2 ${i % 2 == 0 ? '' : 'bg-base'}`}>
+                    <p class="text-2xl my-auto font-semibold mr-6">#{i + 1}</p>
 
                     <img src={user.pfp} class="rounded-full" height="48" width="48" alt="profile" />
-                    <h1 class="text-2xl my-auto font-semibold ml-2">@{user.username}</h1>
-                    <p class="ml-auto text-2xl my-auto font-semibold">
-                        {user.doubloons}
-                        <img src="/doubloon.png" class="inline-block" alt="Doubloon" height="28" width="28">
+                    <h1 class="text-2xl my-auto font-semibold ml-2 mr-10">@{user.username}</h1>
+                    <p class="ml-auto text-2xl my-auto font-semibold flex">
+                        <span class="my-auto mr-1">{user.doubloons}</span>
+                        <img src="/doubloon.png" class="inline-block" alt="Doubloon" height="24" width="24">
                     </p>
                 </div>  
             {/if}
