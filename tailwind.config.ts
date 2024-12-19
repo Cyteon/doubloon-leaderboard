@@ -14,6 +14,10 @@ export default {
         "blue": "#338eda",
         "purple": "#a633d6",
         "muted": "#8492a6",
+        "base": "#121217",
+        "text": "#f9fafc",
+        "surface": "#17171d",
+        "border": "#252429",
       }
     }
   },

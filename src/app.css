@@ -5,5 +5,5 @@
 
 * {
     font-family: "Noto Sans", serif;
-    color: #1f2d3d;
+    @apply text-text;
 }

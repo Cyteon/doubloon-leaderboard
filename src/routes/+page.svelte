@@ -33,23 +33,26 @@
     let i = 0;
 </script>
 
-<div class="flex flex-col w-full h-screen">
-    <h1 class="font-bold text-6xl mx-auto mt-2 p-2 text-center">
+<div class="flex flex-col w-full h-screen bg-base">
+    <h1 class="mx-auto mt-2 p-2 text-center flex">
         <img src="/doubloon.png" class="inline-block" alt="Doubloon" height="96" width="96">
-        Doubloons
+        <span class="mr-1 flex flex-col my-auto">
+            <span class="text-6xl font-bold">Doubloons</span>
+            <span class="text-start text-sm ml-1 text-muted">(actual doubloon data)</span>
+        </span>
     </h1>
 
-    <div class="p-3 shadow-md rounded-lg mx-auto mt-4 mb-8 mx-2 md:mx-8 h-full border-muted border">
+    <div class="p-3 shadow-md rounded-lg mx-auto mt-4 mb-8 mx-2 md:mx-8 h-full bg-surface">
         <div class="flex">
             <h2 class="text-4xl font-semibold">Leaderboard</h2>
             <div class="ml-auto flex">
                 <input 
                 type="text" 
-                class="w-full p-2 border-muted border rounded-lg outline-none focus:outline-blue transition-all duration-300" 
+                class="text-lg w-full p-2 rounded-lg outline-none border border-border transition-all duration-300 bg-base" 
                 placeholder="Enter user ID"
             >
                 <button 
-                    class="bg-red text-white p-2 rounded-lg ml-2"
+                    class="bg-red text-lg text-white p-2 rounded-lg ml-2"
                     on:click={async () => {
                         searched = data.find(user => user.username == document.querySelector('input').value);
                         
@@ -64,11 +67,11 @@
         </div>
 
         {#if searched}
-            <div class="flex p-2 border-b border-muted bg-yellow/10 mt-2">
+            <div class="flex p-2 border-b border-muted bg-yellow/10 rounded-tl-md rounded-tr-md mt-2">
                 <p class="text-2xl my-auto font-semibold mr-2">#{data.indexOf(searched) + 1} - </p>
 
                 <img src={searched.pfp} class="rounded-full" height="48" width="48" alt="profile" />
-                <h1 class="text-2xl my-auto font-bold ml-2">@{searched.username}</h1>
+                <h1 class="text-2xl my-auto font-semibold ml-2">@{searched.username}</h1>
                 <p class="ml-auto text-2xl my-auto font-semibold">
                     {searched.doubloons}
                     <img src="/doubloon.png" class="inline-block" alt="Doubloon" height="28" width="28">
@@ -82,7 +85,7 @@
                     <p class="text-2xl my-auto font-semibold mr-2">#{i + 1} - </p>
 
                     <img src={user.pfp} class="rounded-full" height="48" width="48" alt="profile" />
-                    <h1 class="text-2xl my-auto font-bold ml-2">@{user.username}</h1>
+                    <h1 class="text-2xl my-auto font-semibold ml-2">@{user.username}</h1>
                     <p class="ml-auto text-2xl my-auto font-semibold">
                         {user.doubloons}
                         <img src="/doubloon.png" class="inline-block" alt="Doubloon" height="28" width="28">
