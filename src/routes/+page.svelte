@@ -81,7 +81,7 @@
 
         {#each data as user, i}
             {#if user != searched}
-                <div class={`flex p-2 ${i == data.length - 1 ? '' : 'border-b border-muted'}`}>
+                <div class={`flex p-2 ${i == data.length - 1 ? '' : 'border-b border-b-border'}`}>
                     <p class="text-2xl my-auto font-semibold mr-2">#{i + 1} - </p>
 
                     <img src={user.pfp} class="rounded-full" height="48" width="48" alt="profile" />
