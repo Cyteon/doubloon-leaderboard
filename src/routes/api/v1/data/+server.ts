@@ -43,17 +43,7 @@ async function fetchData() {
                 "doubloons": doc.cellValuesByColumnId.fld8Qfj9OUvo4LeG2,
                 "slack": doc.cellValuesByColumnId.fldDyEwLCk2QQnMAn,
                 "id": doc.cellValuesByColumnId.fldQiUhwbhQ2Lvrm5
-            });
-
-            for (let i = 0; i < 40; i++) {
-                data.push({
-                    "username": doc.cellValuesByColumnId.fldOVlRkhZklVMoqF,
-                    "doubloons": doc.cellValuesByColumnId.fld8Qfj9OUvo4LeG2,
-                    "slack": doc.cellValuesByColumnId.fldDyEwLCk2QQnMAn,
-                    "id": doc.cellValuesByColumnId.fldQiUhwbhQ2Lvrm5
-                });
-            }   
-            
+            }); 
         }
 
         data.sort((a, b) => b.doubloons - a.doubloons);
@@ -65,7 +55,13 @@ async function fetchData() {
 
         return data;
     } else {
-        throw new Error("Failed to fetch data");
+        console.error("Failed to fetch data from Airtable, using cache instead.");
+
+        const cache = await fs.promises.readFile("cache.json", "utf-8");
+
+        const { data } = JSON.parse(cache);
+
+        return data;
     }
 }
 
