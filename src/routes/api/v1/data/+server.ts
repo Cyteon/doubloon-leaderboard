@@ -73,7 +73,7 @@ export async function GET({ url }) {
 
         const { cachedAt, data } = JSON.parse(cache);
 
-        if (Date.now() - cachedAt > 1000 * 60 * 30) {
+        if (Date.now() - cachedAt > 1000 * 60 * 5) {
             let data = await fetchData();
 
             if (total) {

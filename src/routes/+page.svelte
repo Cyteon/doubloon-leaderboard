@@ -15,6 +15,16 @@
         data = await res.json();
     });
 
+    async function search() {
+        const res = await fetch(`/api/v1/search?username=${document.querySelector('input').value}&total=${total}`);
+
+        let json = await res.json();
+        
+        if (res.ok) {
+            searched = json;
+        }
+    }
+
     async function next() {
         if (page < data.pages) {
             page++;
@@ -45,12 +55,14 @@
         const res = await fetch(`/api/v1/data?page=${page}&total=${total}`);
         data = await res.json();
 
-        console.log("Sorting by", total ? "total" : "current");
-
         i = 0;
 
         if (searched) {
-            searched = data.users.find(user => user.username.toLowerCase() === searched.username.toLowerCase());
+            searched.rank = data.users.indexOf(searched) + 1;
+
+            if (searched.rank == 0) {
+                await search();
+            }
         }
     }
 </script>
@@ -83,7 +95,13 @@
                     <button 
                         class="bg-red text-lg text-white p-2 rounded-lg mr-2 md:mr-0 md:ml-2"
                         on:click={async () => {
-                            searched = data.users.find(user => user.username.toLowerCase() === document.querySelector('input').value.toLowerCase());
+                            searched = data.users.find(user => (user.username || "").toLowerCase() === document.querySelector('input').value.toLowerCase());
+
+                            if (!searched) {
+                                await search();
+                            } else {
+                                searched.rank = data.users.indexOf(searched) + 1;
+                            }
                         }}
                     >
                         Search
@@ -115,7 +133,7 @@
         {#if searched}
             <div class="flex p-2 flex-col md:flex-row bg-yellow/10 rounded-tl-md rounded-tr-md mt-2">
                 <div class="flex">
-                    <p class="text-2xl my-auto font-semibold mr-6">#{i + ((page - 1) * 25) + 1}</p>
+                    <p class="text-2xl my-auto font-semibold mr-6">#{searched.rank}</p>
 
                     <img src={`https://cachet.dunkirk.sh/users/${searched.id}/r`} class="rounded-full" height="48" width="48" alt="profile_picture" />
                     <h1 class="text-2xl my-auto font-semibold ml-2">@{searched.username}</h1>
