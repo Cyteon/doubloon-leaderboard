@@ -135,4 +135,9 @@
             </button>
         </div>
     </div>
+
+    <footer class="text-center text-muted">
+        <a href="https://github.com/cyteon/doubloon-leaderboard" class="text-center text-blue">Repo</a>
+        | <a href="https://airtable.com/appTeNFYcUiYfGcR6/shro4hnLq63fT8psX" class="text-center text-blue">Airtable</a>
+    </footer>
 </div>
