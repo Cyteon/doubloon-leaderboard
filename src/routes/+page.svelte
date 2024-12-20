@@ -62,7 +62,7 @@
                 <button 
                     class="bg-red text-lg text-white p-2 rounded-lg ml-2"
                     on:click={async () => {
-                        searched = data.users.find(user => user.username == document.querySelector('input').value);
+                        searched = data.users.find(user => user.username.toLowerCase() === document.querySelector('input').value.toLowerCase());
                         
                         if (!searched) {
                             // Fetch data from API
@@ -92,7 +92,10 @@
                 <p class="text-2xl my-auto font-semibold mr-6">#{i + ((page - 1) * 25) + 1}</p>
 
                 <img src={`https://cachet.dunkirk.sh/users/${user.id}/r`} class="rounded-full" height="48" width="48" alt="profile_picture" />
-                <h1 class="text-2xl my-auto font-semibold ml-2 mr-10">@{user.username}</h1>
+                <h1 class="text-2xl my-auto font-semibold ml-2">@{user.username}</h1>
+                <a href={user.slack} class="ml-2 mr-10 my-auto">
+                    <img src="/slack.svg" class="my-auto" alt="Slack" height="24" width="24">
+                </a>
                 <p class="ml-auto text-2xl my-auto font-semibold flex">
                     <span class="my-auto mr-1">{user.doubloons}</span>
                     <img src="/doubloon.png" class="inline-block" alt="Doubloon" height="24" width="24">
