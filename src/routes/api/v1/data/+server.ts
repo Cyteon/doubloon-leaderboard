@@ -39,14 +39,13 @@ async function fetchData() {
             const doc = docs[docId];
             
             data.push({
-                "username": doc.cellValuesByColumnId.fldOVlRkhZklVMoqF,
-                "doubloons": doc.cellValuesByColumnId.fld8Qfj9OUvo4LeG2,
-                "slack": doc.cellValuesByColumnId.fldDyEwLCk2QQnMAn,
-                "id": doc.cellValuesByColumnId.fldQiUhwbhQ2Lvrm5
+                username: doc.cellValuesByColumnId.fldOVlRkhZklVMoqF,
+                total_doubloons: doc.cellValuesByColumnId.fld8Qfj9OUvo4LeG2,
+                current_doubloons: doc.cellValuesByColumnId.fld4Qofv5LMGtlFlp,
+                slack: doc.cellValuesByColumnId.fldDyEwLCk2QQnMAn,
+                id: doc.cellValuesByColumnId.fldQiUhwbhQ2Lvrm5
             }); 
         }
-
-        data.sort((a, b) => b.doubloons - a.doubloons);
 
         await fs.promises.writeFile("cache.json", JSON.stringify({
             cachedAt: Date.now(),
@@ -67,6 +66,7 @@ async function fetchData() {
 
 export async function GET({ url }) {
     const page = (url.searchParams.get("page") || 1) as number;
+    const total = url.searchParams.get("total") == "true" || false;
 
     try {
         const cache = await fs.promises.readFile("cache.json", "utf-8");
@@ -74,20 +74,38 @@ export async function GET({ url }) {
         const { cachedAt, data } = JSON.parse(cache);
 
         if (Date.now() - cachedAt > 1000 * 60 * 30) {
-            const data = await fetchData();
+            let data = await fetchData();
+
+            if (total) {
+                data.sort((a, b) => b.total_doubloons - a.total_doubloons);
+            } else {
+                data.sort((a, b) => b.current_doubloons - a.current_doubloons);
+            }
 
             return Response.json({
                 users: data.slice(page * 25 - 25, page * 25),
                 pages: Math.ceil(data.length / 25)
             });
         } else {
+            if (total) {
+                data.sort((a, b) => b.total_doubloons - a.total_doubloons);
+            } else {
+                data.sort((a, b) => b.current_doubloons - a.current_doubloons);
+            }
+
             return Response.json({
                 users: data.slice(page * 25 - 25, page * 25),
                 pages: Math.ceil(data.length / 25)
             });
         }
     } catch (e) {
-        const data = await fetchData();
+        let data = await fetchData();
+
+        if (total) {
+            data.sort((a, b) => b.total_doubloons - a.total_doubloons);
+        } else {
+            data.sort((a, b) => b.current_doubloons - a.current_doubloons);
+        }
 
         return Response.json({
             users: data.slice(page * 25 - 25, page * 25),

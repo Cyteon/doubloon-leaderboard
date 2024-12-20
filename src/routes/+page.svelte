@@ -8,7 +8,7 @@
 
     let page = 1;
     let i = 0;
-
+    let total = false; // else total
 
     onMount(async () => {
         const res = await fetch('/api/v1/data');
@@ -34,6 +34,25 @@
         const res = await fetch(`/api/v1/data?page=${page}`);
         data = await res.json();
     }
+
+    async function changeSort() {
+        total = !total;
+
+        data.users.sort((a, b) => {
+            return total ? b.total_doubloons - a.total_doubloons : b.current_doubloons - a.current_doubloons;
+        });
+
+        const res = await fetch(`/api/v1/data?page=${page}&total=${total}`);
+        data = await res.json();
+
+        console.log("Sorting by", total ? "total" : "current");
+
+        i = 0;
+
+        if (searched) {
+            searched = data.users.find(user => user.username.toLowerCase() === searched.username.toLowerCase());
+        }
+    }
 </script>
 
 <div class="flex flex-col w-full min-full min-h-screen">
@@ -54,24 +73,42 @@
                     <a href="https://highseas.hackclub.com/signpost" class="text-blue">The Signpost</a>!
                 </p>
             </div>
-            <div class="md:ml-auto flex flex-row-reverse h-fit md:flex-row">
-                <input 
-                type="text" 
-                class="text-lg w-full p-2 rounded-lg outline-none border border-border transition-all duration-300 bg-base" 
-                placeholder="Enter username"
-            >
-                <button 
-                    class="bg-red text-lg text-white p-2 rounded-lg mr-2 md:mr-0 md:ml-2"
-                    on:click={async () => {
-                        searched = data.users.find(user => user.username.toLowerCase() === document.querySelector('input').value.toLowerCase());
-                        
-                        if (!searched) {
-                            // Fetch data from API
-                        }
-                    }}
-                >
-                    Search
-                </button>
+            <div class="md:ml-auto">
+                <div class="flex flex-row-reverse h-fit md:flex-row">
+                    <input 
+                        type="text" 
+                        class="text-lg w-full p-2 rounded-lg outline-none border border-border transition-all duration-300 bg-base" 
+                        placeholder="Enter username"
+                    >
+                    <button 
+                        class="bg-red text-lg text-white p-2 rounded-lg mr-2 md:mr-0 md:ml-2"
+                        on:click={async () => {
+                            searched = data.users.find(user => user.username.toLowerCase() === document.querySelector('input').value.toLowerCase());
+                        }}
+                    >
+                        Search
+                    </button>
+                </div>
+
+                <label class="flex justify-end mt-2">
+                    <input 
+                        type="checkbox"
+                        class="sr-only peer"
+                        on:change={() => changeSort()}
+                        checked={total}
+                    />
+                    
+                    <span>Current</span>
+                    
+                    <div class="
+                        relative w-11 h-6
+                        rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full 
+                        peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white 
+                        after:rounded-full after:h-5 after:w-5 after:transition-all bg-blue mx-2
+                    "></div>
+
+                    <span>All Time</span>
+                </label>
             </div>
         </div>
 
@@ -88,7 +125,7 @@
                         <img src="/slack.svg" class="my-auto" alt="Slack" height="24" width="24">
                     </a>
                     <p class="ml-auto text-2xl my-auto font-semibold flex">
-                        <span class="my-auto mr-1">{parseInt(searched.doubloons)}</span>
+                        <span class="my-auto mr-1">{parseInt(total ? searched.total_doubloons : searched.current_doubloons)}</span>
                         <img src="/doubloon.png" class="inline-block" alt="Doubloon" height="24" width="24">
                     </p>
                 </div>
@@ -108,7 +145,7 @@
                         <img src="/slack.svg" class="my-auto" alt="Slack" height="24" width="24">
                     </a>
                     <p class="ml-auto text-2xl my-auto font-semibold flex">
-                        <span class="my-auto mr-1">{parseInt(user.doubloons)}</span>
+                        <span class="my-auto mr-1">{parseInt(total ? user.total_doubloons : user.current_doubloons)}</span>
                         <img src="/doubloon.png" class="inline-block" alt="Doubloon" height="24" width="24">
                     </p>
                 </div>
