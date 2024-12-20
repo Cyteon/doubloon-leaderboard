@@ -88,7 +88,7 @@
                         <img src="/slack.svg" class="my-auto" alt="Slack" height="24" width="24">
                     </a>
                     <p class="ml-auto text-2xl my-auto font-semibold flex">
-                        <span class="my-auto mr-1">{searched.doubloons}</span>
+                        <span class="my-auto mr-1">{parseInt(searched.doubloons)}</span>
                         <img src="/doubloon.png" class="inline-block" alt="Doubloon" height="24" width="24">
                     </p>
                 </div>
@@ -108,7 +108,7 @@
                         <img src="/slack.svg" class="my-auto" alt="Slack" height="24" width="24">
                     </a>
                     <p class="ml-auto text-2xl my-auto font-semibold flex">
-                        <span class="my-auto mr-1">{user.doubloons}</span>
+                        <span class="my-auto mr-1">{parseInt(user.doubloons)}</span>
                         <img src="/doubloon.png" class="inline-block" alt="Doubloon" height="24" width="24">
                     </p>
                 </div>
