@@ -1,39 +1,41 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+
     // mock data
-    let data = [
-        {
-            "username": "User1",
-            "pfp": "https://i.pravatar.cc/300",
-            "doubloons": 2000,
-        },
-        {
-            "username": "User2",
-            "pfp": "https://i.pravatar.cc/301",
-            "doubloons": 1500,
-        },
-        {
-            "username": "User3",
-            "pfp": "https://i.pravatar.cc/302",
-            "doubloons": 1000,
-        },
-        {
-            "username": "User4",
-            "pfp": "https://i.pravatar.cc/303",
-            "doubloons": 500,
-        },
-        {
-            "username": "User5",
-            "pfp": "https://i.pravatar.cc/304",
-            "doubloons": 250,
-        }
-    ]
+    let data = []
 
     let searched = null;
 
+    let page = 1;
     let i = 0;
+
+    onMount(async () => {
+        const res = await fetch('/api/v1/data');
+        data = await res.json();
+    });
+
+    async function next() {
+        if (page < data.pages) {
+            page++;
+            i = (page - 1) * 25;
+        }
+
+        const res = await fetch(`/api/v1/data?page=${page}`);
+        data = await res.json();
+    }
+
+    async function prev() {
+        if (page > 1) {
+            page--;
+            i = (page - 1) * 25;
+        }
+
+        const res = await fetch(`/api/v1/data?page=${page}`);
+        data = await res.json();
+    }
 </script>
 
-<div class="flex flex-col w-full h-screen bg-base">
+<div class="flex flex-col w-full min-full min-h-screen bg-base">
     <h1 class="mx-auto mt-2 p-2 text-center flex">
         <img src="/doubloon.png" class="inline-block" alt="Doubloon" height="72" width="72">
         <span class="ml-2 flex flex-col my-auto">
@@ -55,12 +57,12 @@
                 <input 
                 type="text" 
                 class="text-lg w-full p-2 rounded-lg outline-none border border-border transition-all duration-300 bg-base" 
-                placeholder="Enter user ID"
+                placeholder="Enter username"
             >
                 <button 
                     class="bg-red text-lg text-white p-2 rounded-lg ml-2"
                     on:click={async () => {
-                        searched = data.find(user => user.username == document.querySelector('input').value);
+                        searched = data.users.find(user => user.username == document.querySelector('input').value);
                         
                         if (!searched) {
                             // Fetch data from API
@@ -74,9 +76,9 @@
 
         {#if searched}
             <div class="flex p-2 bg-yellow/10 rounded-tl-md rounded-tr-md mt-2">
-                <p class="text-2xl my-auto font-semibold mr-6">#{data.indexOf(searched) + 1}</p>
+                <p class="text-2xl my-auto font-semibold mr-6">#{data.users.indexOf(searched) + 1}</p>
 
-                <img src={searched.pfp} class="rounded-full" height="48" width="48" alt="profile" />
+                <img src={`https://cachet.dunkirk.sh/users/${searched.id}/r`} class="rounded-full" height="48" width="48" alt="profile_picture" />
                 <h1 class="text-2xl my-auto font-semibold ml-2 mr-10">@{searched.username}</h1>
                 <p class="ml-auto text-2xl my-auto font-semibold flex">
                     <span class="my-auto mr-1">{searched.doubloons}</span>
@@ -85,11 +87,11 @@
             </div>
         {/if}
 
-        {#each data as user, i}
-            <div class={`flex p-2 ${i % 2 == 0 ? '' : 'bg-base'}`}>
-                <p class="text-2xl my-auto font-semibold mr-6">#{i + 1}</p>
+        {#each data.users as user, i} 
+            <div class={`flex p-2 ${(i + (page - 1) * 25) % 2 == 0 ? '' : 'bg-base'}`}>
+                <p class="text-2xl my-auto font-semibold mr-6">#{i + ((page - 1) * 25) + 1}</p>
 
-                <img src={user.pfp} class="rounded-full" height="48" width="48" alt="profile" />
+                <img src={`https://cachet.dunkirk.sh/users/${user.id}/r`} class="rounded-full" height="48" width="48" alt="profile_picture" />
                 <h1 class="text-2xl my-auto font-semibold ml-2 mr-10">@{user.username}</h1>
                 <p class="ml-auto text-2xl my-auto font-semibold flex">
                     <span class="my-auto mr-1">{user.doubloons}</span>
@@ -97,5 +99,25 @@
                 </p>
             </div>  
         {/each}
+
+        <div class="flex justify-center mt-4 mb-2">
+            <button 
+                class="bg-blue text-lg text-white p-2 rounded-lg"
+                on:click={() => prev()}
+            >
+                Back
+            </button>
+
+            <span class="text-2xl font-semibold mx-4 my-auto">
+                {page}/{data.pages}
+            </span>
+
+            <button 
+                class="bg-blue text-lg text-white p-2 rounded-lg"
+                on:click={() => next()}
+            >
+                Next
+            </button>
+        </div>
     </div>
 </div>
