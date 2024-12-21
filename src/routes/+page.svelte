@@ -135,7 +135,7 @@
                 <div class="flex">
                     <p class="text-2xl my-auto font-semibold mr-6">#{searched.rank}</p>
 
-                    <img src={`https://cachet.dunkirk.sh/users/${searched.id}/r`} class="rounded-full" height="48" width="48" alt="profile_picture" />
+                    <img src={`https://cachet.dunkirk.sh/users/${searched.id}/r`} class="rounded-full w-[48px] h-[48px]" alt="profile_picture" />
                     <h1 class="text-2xl my-auto font-semibold ml-2">@{searched.username}</h1>
                 </div>
                 <div class="flex flex-grow md:ml-2">
@@ -155,7 +155,7 @@
                 <div class="flex">
                     <p class="text-2xl my-auto font-semibold mr-6">#{i + ((page - 1) * 25) + 1}</p>
 
-                    <img src={`https://cachet.dunkirk.sh/users/${user.id}/r`} class="rounded-full" height="48" width="48" alt="profile_picture" />
+                    <img src={`https://cachet.dunkirk.sh/users/${user.id}/r`} class="rounded-full w-[48px] h-[48px]" alt="profile_picture" />
                     <h1 class="text-2xl my-auto font-semibold ml-2">@{user.username}</h1>
                 </div>
                 <div class="flex flex-grow md:ml-2">
