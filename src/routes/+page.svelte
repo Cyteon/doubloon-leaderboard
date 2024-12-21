@@ -4,11 +4,11 @@
     // mock data
     let data = []
 
-    let searched = null;
+    let searched = false;
 
     let page = 1;
     let i = 0;
-    let total = false; // else total
+    let total = false; // else current
 
     onMount(async () => {
         const res = await fetch('/api/v1/data');
@@ -21,7 +21,8 @@
         let json = await res.json();
         
         if (res.ok) {
-            searched = json;
+            data = json;
+            searched = true;
         }
     }
 
@@ -52,18 +53,17 @@
             return total ? b.total_doubloons - a.total_doubloons : b.current_doubloons - a.current_doubloons;
         });
 
-        const res = await fetch(`/api/v1/data?page=${page}&total=${total}`);
+        let res;
+
+        if (searched) {
+            res = await fetch(`/api/v1/search?username=${document.querySelector('input').value}&total=${total}&page=${page}`);
+        } else {
+            res = await fetch(`/api/v1/data?page=${page}&total=${total}`);
+        }
+
         data = await res.json();
 
         i = 0;
-
-        if (searched) {
-            searched.rank = data.users.indexOf(searched) + 1;
-
-            if (searched.rank == 0) {
-                await search();
-            }
-        }
     }
 </script>
 
@@ -95,13 +95,14 @@
                     <button 
                         class="bg-red text-lg text-white p-2 rounded-lg mr-2 md:mr-0 md:ml-2"
                         on:click={async () => {
-                            searched = data.users.find(user => (user.username || "").toLowerCase() === document.querySelector('input').value.toLowerCase());
-
-                            if (!searched) {
-                                await search();
-                            } else {
-                                searched.rank = data.users.indexOf(searched) + 1;
+                            if (document.querySelector('input').value == '') {
+                                const res = await fetch(`/api/v1/data?page=${page}&total=${total}`);
+                                data = await res.json();
+                                searched = false;
+                                return;
                             }
+                            
+                            await search();
                         }}
                     >
                         Search
@@ -130,30 +131,10 @@
             </div>
         </div>
 
-        {#if searched}
-            <div class="flex p-2 flex-col md:flex-row bg-yellow/10 rounded-tl-md rounded-tr-md mt-2">
-                <div class="flex">
-                    <p class="text-2xl my-auto font-semibold mr-6">#{searched.rank}</p>
-
-                    <img src={`https://cachet.dunkirk.sh/users/${searched.id}/r`} class="rounded-full w-[48px] h-[48px]" alt="profile_picture" />
-                    <h1 class="text-2xl my-auto font-semibold ml-2">@{searched.username}</h1>
-                </div>
-                <div class="flex flex-grow md:ml-2">
-                    <a href={searched.slack} class="mr-5 my-auto">
-                        <img src="/slack.svg" class="my-auto" alt="Slack" height="24" width="24">
-                    </a>
-                    <p class="ml-auto text-2xl my-auto font-semibold flex">
-                        <span class="my-auto mr-1">{parseInt(total ? searched.total_doubloons : searched.current_doubloons)}</span>
-                        <img src="/doubloon.png" class="inline-block" alt="Doubloon" height="24" width="24">
-                    </p>
-                </div>
-            </div>
-        {/if}
-
         {#each data.users as user, i} 
             <div class={`flex flex-col md:flex-row p-2 ${(i + (page - 1) * 25) % 2 == 0 ? '' : 'bg-base'}`}>
                 <div class="flex">
-                    <p class="text-2xl my-auto font-semibold mr-6">#{i + ((page - 1) * 25) + 1}</p>
+                    <p class="text-2xl my-auto font-semibold mr-6">#{searched ? user.rank : i + ((page - 1) * 25) + 1}</p>
 
                     <img src={`https://cachet.dunkirk.sh/users/${user.id}/r`} class="rounded-full w-[48px] h-[48px]" alt="profile_picture" />
                     <h1 class="text-2xl my-auto font-semibold ml-2">@{user.username}</h1>
