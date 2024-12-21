@@ -31,7 +31,7 @@
             i = (page - 1) * 25;
         }
 
-        const res = await fetch(`/api/v1/data?page=${page}`);
+        const res = await fetch(`/api/v1/data?page=${page}&total=${total}`);
         data = await res.json();
     }
 
@@ -41,7 +41,7 @@
             i = (page - 1) * 25;
         }
 
-        const res = await fetch(`/api/v1/data?page=${page}`);
+        const res = await fetch(`/api/v1/data?page=${page}&total=${total}`);
         data = await res.json();
     }
 
