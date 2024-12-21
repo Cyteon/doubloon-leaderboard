@@ -12,6 +12,7 @@ export default {
         "green": "#33d6a6",
         "cyan": "#5bc0de",
         "blue": "#338eda",
+        "darkerblue": "#2e7cc4",
         "purple": "#a633d6",
         "muted": "#8492a6",
         "base": "#121217",

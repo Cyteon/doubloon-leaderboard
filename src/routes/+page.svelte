@@ -157,7 +157,7 @@
 
         <div class="flex justify-center mt-4 mb-2">
             <button 
-                class="bg-blue text-lg text-white p-2 rounded-lg"
+                class="bg-darkerblue text-lg text-white p-2 rounded-lg"
                 on:click={() => prev()}
             >
                 Back
@@ -168,7 +168,7 @@
             </span>
 
             <button 
-                class="bg-blue text-lg text-white p-2 rounded-lg"
+                class="bg-darkerblue text-lg text-white p-2 rounded-lg"
                 on:click={() => next()}
             >
                 Next
