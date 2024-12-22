@@ -12,7 +12,7 @@ export async function GET({ url }) {
 
     const cache = await fs.promises.readFile("cache.json", "utf-8");
 
-    const { data } = JSON.parse(cache);
+    const { data, cachedAt } = JSON.parse(cache);
 
     let users = data.filter((user) => user.username?.toLowerCase().includes(username.toLowerCase()));
 
@@ -36,6 +36,8 @@ export async function GET({ url }) {
 
     return Response.json({
         users,
-        pages: Math.ceil(users.length / 25)
+        pages: Math.ceil(users.length / 25),
+        opted_in: data.length,
+        time_since_last_update: Date.now() - cachedAt
     });
 }
