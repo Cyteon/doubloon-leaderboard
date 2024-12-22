@@ -179,5 +179,13 @@
     <footer class="text-center text-muted mb-6">
         <a href="https://github.com/cyteon/doubloon-leaderboard" class="text-center text-blue">Repo</a>
         | <a href="https://airtable.com/appTeNFYcUiYfGcR6/shro4hnLq63fT8psX" class="text-center text-blue">Airtable</a>
+        | {data.opted_in} opted-in
+        | { 
+            data.time_since_last_update/1000 < 10 ? "Just now" : (
+                data.time_since_last_update/1000 < 60 
+                    ? `${(data.time_since_last_update/1000).toFixed(1)} seconds ago` 
+                    : `${(data.time_since_last_update/1000/60).toFixed(1)} minutes ago`
+            )
+        }
     </footer>
 </div>

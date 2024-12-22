@@ -84,7 +84,9 @@ export async function GET({ url }) {
 
             return Response.json({
                 users: data.slice(page * 25 - 25, page * 25),
-                pages: Math.ceil(data.length / 25)
+                pages: Math.ceil(data.length / 25),
+                opted_in: data.length,
+                time_since_last_update: 0
             });
         } else {
             if (total) {
@@ -95,7 +97,9 @@ export async function GET({ url }) {
 
             return Response.json({
                 users: data.slice(page * 25 - 25, page * 25),
-                pages: Math.ceil(data.length / 25)
+                pages: Math.ceil(data.length / 25),
+                opted_in: data.length,
+                time_since_last_update: Date.now() - cachedAt
             });
         }
     } catch (e) {
@@ -109,7 +113,9 @@ export async function GET({ url }) {
 
         return Response.json({
             users: data.slice(page * 25 - 25, page * 25),
-            pages: Math.ceil(data.length / 25)
+            pages: Math.ceil(data.length / 25),
+            opted_in: data.length,
+            time_since_last_update: 0
         });
     }
 }
