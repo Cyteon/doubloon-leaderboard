@@ -70,7 +70,7 @@
 <svelte:head>
     <meta name="og:title" content="Doubloon Leaderboard" />
     <meta name="og:description" content="Doubloon leaderboard for HighSeas" />
-    <meta name="og:image" content="https://doubloon.leaderboard.hackclub.dev/doubloon.png" />
+    <meta name="og:image" content="https://doubloons.cyteon.hackclub.app/doubloon.png" />
     <meta name="og:url" content="https://doubloons.cyteon.hackclub.app" />
 </svelte:head>
 
