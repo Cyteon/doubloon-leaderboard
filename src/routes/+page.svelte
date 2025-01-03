@@ -1,13 +1,19 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+  import { onMount } from "svelte";
 
-    let {data} = $props();
+    // mock data
+    let data = []
 
     let searched = false;
 
     let page = 1;
     let i = 0;
     let total = false; // else current
+
+    onMount(async () => {
+        const res = await fetch('/api/v1/data');
+        data = await res.json();
+    });
 
     async function search() {
         const res = await fetch(`/api/v1/search?username=${document.querySelector('input').value}&total=${total}`);
