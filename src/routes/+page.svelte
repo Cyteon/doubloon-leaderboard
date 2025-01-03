@@ -67,6 +67,13 @@
     }
 </script>
 
+<svelte:head>
+    <meta name="og:title" content="Doubloon Leaderboard" />
+    <meta name="og:description" content="Doubloon leaderboard for HighSeas" />
+    <meta name="og:image" content="https://doubloon.leaderboard.hackclub.dev/doubloon.png" />
+    <meta name="og:url" content="https://doubloons.cyteon.hackclub.app" />
+</svelte:head>
+
 <div class="flex flex-col w-full min-full min-h-screen">
     <h1 class="mx-auto mt-2 p-2 text-center flex">
         <img src="/doubloon.png" class="inline-block" alt="Doubloon" height="72" width="72">
