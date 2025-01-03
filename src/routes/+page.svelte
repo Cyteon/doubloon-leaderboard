@@ -76,7 +76,7 @@
         </span>
     </h1>
 
-    <div class="p-3 shadow-md rounded-lg mx-auto mt-4 mb-8 mx-2 md:mx-8 h-full bg-surface">
+    <div class="p-3 shadow-md rounded-lg mt-4 mb-8 mx-2 md:mx-8 h-full bg-surface">
         <div class="flex flex-col md:flex-row mb-4">
             <div>
                 <h2 class="text-4xl font-semibold">Leaderboard</h2>
