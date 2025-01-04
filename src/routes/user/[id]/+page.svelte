@@ -26,7 +26,8 @@
   </script>
   
   <svelte:head> 
-      <meta name="og:title" content={`Stats for ${data.props.id} on HighSeas`} />
+      <meta name="og:title" content={`Leaderboard user stats`} />
+      <meta name="og:description" content={`For user with id "${data.props.id}" on the HC slack`} />
       <meta name="og:image" content={`https://cachet.dunkirk.sh/users/${data.props.id}/r`} />
       <meta name="og:url" content="https://doubloons.cyteon.hackclub.app/user/${data.props.id}" />
   </svelte:head>
