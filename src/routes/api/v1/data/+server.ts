@@ -5,7 +5,12 @@ client.del("doubloon_lb");
 
 export async function GET({ url }) {
     const page = (url.searchParams.get("page") || 1) as number;
-    const total = url.searchParams.get("total") == "true" || false;
+    let sortBy = url.searchParams.get("sortBy") || "current";
+
+    // For backwards compatibility
+    if ((url.searchParams.get("total") || "false") === "true") {
+        sortBy = "total";
+    }
 
     try {
         const cache = await client.get("doubloon_lb");
@@ -13,8 +18,10 @@ export async function GET({ url }) {
         if (cache) {
             let { cachedAt, data } = JSON.parse(cache);
 
-            if (total) {
+            if (sortBy === "total") {
                 data.sort((a, b) => b.total_doubloons - a.total_doubloons);
+            } else if (sortBy === "spent") {
+                data.sort((a, b) => b.total_doubloons - b.current_doubloons - (a.total_doubloons - a.current_doubloons));
             } else {
                 data.sort((a, b) => b.current_doubloons - a.current_doubloons);
             }
@@ -28,8 +35,10 @@ export async function GET({ url }) {
         } else {
             let data = await fetchData();
 
-            if (total) {
+            if (sortBy === "total") {
                 data.sort((a, b) => b.total_doubloons - a.total_doubloons);
+            } else if (sortBy === "spent") {
+                data.sort((a, b) => b.total_doubloons - b.current_doubloons - (a.total_doubloons - a.current_doubloons));
             } else {
                 data.sort((a, b) => b.current_doubloons - a.current_doubloons);
             }
@@ -46,8 +55,10 @@ export async function GET({ url }) {
 
         let data = await fetchData();
 
-        if (total) {
+        if (sortBy === "total") {
             data.sort((a, b) => b.total_doubloons - a.total_doubloons);
+        } else if (sortBy === "spent") {
+            data.sort((a, b) => b.total_doubloons - b.current_doubloons - (a.total_doubloons - a.current_doubloons));
         } else {
             data.sort((a, b) => b.current_doubloons - a.current_doubloons);
         }

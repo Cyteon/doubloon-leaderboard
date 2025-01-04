@@ -1,4 +1,3 @@
-import fs from "fs";
 import client from "$lib/cache.server";
 import fetchData from "$lib/fetchData.server";
 
@@ -10,7 +9,13 @@ export async function GET({ url }) {
         return Response.json({ error: "Username or ID is required." }, { status: 400 });
     }
 
-    const total = url.searchParams.get("total") == "true" || false;
+    let sortBy = url.searchParams.get("sortBy") || "current";
+
+    // Backwards compatibility
+    if ((url.searchParams.get("total") || "false") === "true") {
+        sortBy = "total";
+    }
+
     const page = parseInt(url.searchParams.get("page") || "1");
 
     let cache = await client.get("doubloon_lb");
@@ -25,8 +30,10 @@ export async function GET({ url }) {
         cachedAt = JSON.parse(cache).cachedAt;
     }
     
-    if (total) {
+    if (sortBy === "total") {
         data.sort((a, b) => b.total_doubloons - a.total_doubloons);
+    } else if (sortBy === "spent") {
+        data.sort((a, b) => b.total_doubloons - b.current_doubloons - (a.total_doubloons - a.current_doubloons));
     } else {
         data.sort((a, b) => b.current_doubloons - a.current_doubloons);
     }
@@ -53,10 +60,12 @@ export async function GET({ url }) {
         user.rank = data.findIndex((u) => u.username === user.username) + 1;
     });
 
-    if (total) {
-        users.sort((a, b) => b.total_doubloons - a.total_doubloons);
+    if (sortBy === "total") {
+        data.sort((a, b) => b.total_doubloons - a.total_doubloons);
+    } else if (sortBy === "spent") {
+        data.sort((a, b) => b.total_doubloons - b.current_doubloons - (a.total_doubloons - a.current_doubloons));
     } else {
-        users.sort((a, b) => b.current_doubloons - a.current_doubloons);
+        data.sort((a, b) => b.current_doubloons - a.current_doubloons);
     }
 
     users = users.slice(page * 25 - 25, page * 25);
