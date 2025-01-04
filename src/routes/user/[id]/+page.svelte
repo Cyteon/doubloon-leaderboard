@@ -100,7 +100,10 @@
                     <p>Current:</p> <p class="ml-auto flex font-bold">= {user.current_doubloons} <img src="/doubloon.png" class="inline-block object-scale-down ml-1" alt="Doubloon" height="20" width="20"></p>
                 </div>
 
-                <div id="chart" class="w-full mt-4 md:mt-0 md:ml-16 h-48 md:h-64 bg-base rounded-md relative"></div>
+                <div class="w-full md:ml-4 md:ml-16">
+                    <div id="chart" class="mt-4 md:mt-0 h-48 md:h-64 bg-base rounded-md relative"></div>
+                    <p class="text-muted mt-1 text-sm text-right">Disclaimer: Tracking started at 4th January 2024, 12:43 UTC</p>
+                </div>
             </div>
         </div>
 
