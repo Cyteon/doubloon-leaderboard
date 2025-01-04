@@ -4,12 +4,6 @@
     export let data;
     let stats = {};
     let user = {};
-
-    let searched = false;
-  
-    let page = 1;
-    let i = 0;
-    let total = false; // else current
   
     onMount(async () => {
         const res = await fetch(`/api/v1/search?id=${data.props.id}`);
@@ -26,8 +20,8 @@
   </script>
   
   <svelte:head> 
-      <meta name="og:title" content={`Leaderboard user stats`} />
-      <meta name="og:description" content={`For user with id "${data.props.id}" on the HC slack`} />
+      <meta name="og:title" content="Doubloon Leaderboard" />
+      <meta name="og:description" content={`Stats for user with id "${data.props.id}" on the HC slack`} />
       <meta name="og:image" content={`https://cachet.dunkirk.sh/users/${data.props.id}/r`} />
       <meta name="og:url" content="https://doubloons.cyteon.hackclub.app/user/${data.props.id}" />
   </svelte:head>
