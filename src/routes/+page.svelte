@@ -23,6 +23,7 @@
         if (res.ok) {
             data = json;
             searched = true;
+            page = 1;
         }
     }
 
@@ -30,20 +31,20 @@
         if (page < data.pages) {
             page++;
             i = (page - 1) * 25;
-        }
 
-        const res = await fetch(`/api/v1/data?page=${page}&total=${total}`);
-        data = await res.json();
+            const res = await fetch(`/api/v1/data?page=${page}&total=${total}`);
+            data = await res.json();
+        }
     }
 
     async function prev() {
         if (page > 1) {
             page--;
             i = (page - 1) * 25;
-        }
 
-        const res = await fetch(`/api/v1/data?page=${page}&total=${total}`);
-        data = await res.json();
+            const res = await fetch(`/api/v1/data?page=${page}&total=${total}`);
+            data = await res.json();
+        }
     }
 
     async function changeSort() {
