@@ -1,4 +1,5 @@
 import fs from "fs";
+import client from "$lib/cache.server";
 
 export async function GET({ url }) {
     const username = url.searchParams.get("username");
@@ -11,7 +12,7 @@ export async function GET({ url }) {
     const total = url.searchParams.get("total") == "true" || false;
     const page = parseInt(url.searchParams.get("page") || "1");
 
-    const cache = await fs.promises.readFile("cache.json", "utf-8");
+    const cache = await client.get("doubloon_lb");
 
     const { data, cachedAt } = JSON.parse(cache);
     
