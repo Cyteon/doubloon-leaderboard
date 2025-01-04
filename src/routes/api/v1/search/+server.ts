@@ -14,12 +14,16 @@ export async function GET({ url }) {
     const page = parseInt(url.searchParams.get("page") || "1");
 
     let cache = await client.get("doubloon_lb");
+    let data, cachedAt;
 
     if (!cache) {
-        cache = await fetchData();
-    }
+        data = await fetchData();
 
-    let { data, cachedAt } = JSON.parse(cache);
+        cachedAt = Date.now();
+    } else {
+        data = JSON.parse(cache).data;
+        cachedAt = JSON.parse(cache).cachedAt;
+    }
     
     if (total) {
         data.sort((a, b) => b.total_doubloons - a.total_doubloons);
