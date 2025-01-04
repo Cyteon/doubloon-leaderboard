@@ -10,10 +10,8 @@ await sql`CREATE TABLE IF NOT EXISTS doubloons (
     doubloons integer not null,
     timestamp timestamp not null default current_timestamp
 );`
-    .then(() => console.log("Table created."))
+    .then(() => console.log("Table created. Connected to PSQL"))
     .catch((err) => console.error(err));
-
-console.log("Connected to PostgreSQL.");
 
 setInterval(async () => {
     try {
