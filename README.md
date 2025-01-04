@@ -11,9 +11,7 @@ There are two sorting modes, current doubloons, and all-time doubloons (all doub
 You can also search for users, and they will appear if they are opted into the leaderboard \
 Thanks to [@taciturnaxolotl](https://github.com/taciturnaxolotl) for implementing this on the signpost in PR https://github.com/hackclub/high-seas/pull/997
 
-## Api Docs
-Routes:
-
+## Api Routes
 ### /api/v1/data
 **Parameters**:
 - ?page=(integer) - Used for pagination, each page is 25 users
