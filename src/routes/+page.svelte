@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-    // mock data
     let data = []
 
     let searched = false;
@@ -144,12 +143,13 @@
                 <div class="flex">
                     <p class="text-2xl my-auto font-semibold mr-6">#{searched ? user.rank : i + ((page - 1) * 25) + 1}</p>
 
-                    <img src={`https://cachet.dunkirk.sh/users/${user.id}/r`} class="rounded-full w-[48px] h-[48px]" alt="profile_picture" />
-                    <h1 
+                    <img src={`https://cachet.dunkirk.sh/users/${user.id}/r`} class="rounded-md w-[48px] h-[48px]" alt="profile_picture" />
+                    <a 
+                        href={`/user/${user.id}`}
                         class="text-2xl my-auto font-semibold ml-2 truncate max-w-24 min-[400px]:max-w-48 min-[600px]:max-w-64 min-[800px]:max-w-fit"
                     >
                         {user.username}
-                    </h1>
+                    </a>
                 </div>
                 <div class="flex flex-grow md:ml-2">
                     <a href={user.slack} class="mr-5 my-auto">

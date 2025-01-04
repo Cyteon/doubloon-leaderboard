@@ -9,7 +9,6 @@ export default {
         "red": "#ec3750",
         "orange": "#ff8c37",
         "yellow": "#f1c40f",
-        "green": "#33d6a6",
         "cyan": "#5bc0de",
         "blue": "#338eda",
         "darkerblue": "#2e7cc4",

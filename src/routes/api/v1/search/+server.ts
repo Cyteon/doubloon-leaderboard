@@ -1,5 +1,6 @@
 import fs from "fs";
 import client from "$lib/cache.server";
+import fetchData from "$lib/fetchData.server";
 
 export async function GET({ url }) {
     const username = url.searchParams.get("username");
@@ -12,9 +13,13 @@ export async function GET({ url }) {
     const total = url.searchParams.get("total") == "true" || false;
     const page = parseInt(url.searchParams.get("page") || "1");
 
-    const cache = await client.get("doubloon_lb");
+    let cache = await client.get("doubloon_lb");
 
-    const { data, cachedAt } = JSON.parse(cache);
+    if (!cache) {
+        cache = await fetchData();
+    }
+
+    let { data, cachedAt } = JSON.parse(cache);
     
     if (total) {
         data.sort((a, b) => b.total_doubloons - a.total_doubloons);
@@ -33,7 +38,8 @@ export async function GET({ url }) {
 
         return Response.json({
             user,
-            time_since_last_update: Date.now() - cachedAt
+            time_since_last_update: Date.now() - cachedAt,
+            opted_in: data.length
         });
     }
 
