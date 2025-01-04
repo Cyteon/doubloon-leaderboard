@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
+    import { createChart, LineType } from "lightweight-charts";
   
     export let data;
     let stats = {};
@@ -15,7 +16,58 @@
             time_since_last_update: json.time_since_last_update
         }
 
-        console.log(user)
+        const graphRes = await fetch(`/api/v1/graph?id=${data.props.id}`);
+
+        if (graphRes.ok) {
+            const graphPoints = await graphRes.json();
+            
+            const graph = createChart(
+                document.getElementById("chart") as HTMLElement,
+                {
+                    layout: {
+                        textColor: "white",
+                        background: { color: "transparent" },
+                        attributionLogo: false,
+                    },
+
+                    grid: {
+                        horzLines: { color: "#252429" },
+                        vertLines: { color: "#252429" },
+                    },
+
+                    rightPriceScale: {
+                        borderColor: "#17171d",
+                    },
+
+                    timeScale: {
+                        borderColor: "#17171d",
+                        timeVisible: true,
+                    },
+
+                    width: document.getElementById("chart").clientWidth,
+                    height: document.getElementById("chart").clientHeight,
+                }
+            )
+            
+            const series = graph.addAreaSeries();
+
+            series.setData(graphPoints.map((point) => {
+                console.log(
+                    new Date(
+                        new Date(point.timestamp).getTime() - new Date(point.timestamp).getTimezoneOffset() * 60000
+                    )
+                )
+
+                return {
+                    time: new Date(
+                        new Date(point.timestamp).getTime() - new Date(point.timestamp).getTimezoneOffset() * 60000
+                    ).getTime() / 1000,
+                    value: point.doubloons
+                }
+            }));
+
+            graph.timeScale().fitContent();
+        }
     });
   </script>
   
@@ -38,12 +90,17 @@
         <div class="p-3 shadow-md rounded-lg mt-4 mb-8 mx-2 md:mx-8 h-full bg-surface">
             <div class="flex flex-col md:flex-row mb-4">    
                 <h2 class="text-4xl font-semibold">User Stats</h2>
+                <a href="/" class="md:ml-auto text-blue hover:underline">Back to leaderboard</a>
             </div>
 
-            <div class="rounded-md p-2 bg-base grid grid-cols-2 max-w-60 text-2xl">
-                <p>Earned:</p> <p class="ml-auto flex font-bold text-green-400">+ {user.total_doubloons} <img src="/doubloon.png" class="inline-block object-scale-down ml-1" alt="Doubloon" height="20" width="20"></p>
-                <p>Spent:</p> <p class="ml-auto flex font-bold text-red">- {user.total_doubloons - user.current_doubloons} <img src="/doubloon.png" class="inline-block object-scale-down ml-1" alt="Doubloon" height="20" width="20"></p>
-                <p>Current:</p> <p class="ml-auto flex font-bold">= {user.current_doubloons} <img src="/doubloon.png" class="inline-block object-scale-down ml-1" alt="Doubloon" height="20" width="20"></p>
+            <div class="flex w-full flex-col md:flex-row">
+                <div class="rounded-md p-2 bg-base grid grid-cols-2 w-full md:w-80 text-2xl h-fit">
+                    <p>Earned:</p> <p class="ml-auto flex font-bold text-green-400">+ {user.total_doubloons} <img src="/doubloon.png" class="inline-block object-scale-down ml-1" alt="Doubloon" height="20" width="20"></p>
+                    <p>Spent:</p> <p class="ml-auto flex font-bold text-red">- {user.total_doubloons - user.current_doubloons} <img src="/doubloon.png" class="inline-block object-scale-down ml-1" alt="Doubloon" height="20" width="20"></p>
+                    <p>Current:</p> <p class="ml-auto flex font-bold">= {user.current_doubloons} <img src="/doubloon.png" class="inline-block object-scale-down ml-1" alt="Doubloon" height="20" width="20"></p>
+                </div>
+
+                <div id="chart" class="w-full mt-4 md:mt-0 md:ml-16 h-48 md:h-64 bg-base rounded-md relative"></div>
             </div>
         </div>
 
