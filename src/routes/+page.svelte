@@ -164,7 +164,7 @@
                     <img src={`https://cachet.dunkirk.sh/users/${user.id}/r`} class="rounded-md w-[48px] h-[48px]" alt="profile_picture" />
                     <a 
                         href={`/user/${user.id}`}
-                        class="text-2xl my-auto font-semibold ml-2 truncate max-w-24 min-[350px]:max-w-48 min-[450px]:max-w-64 min-[700px]:max-w-fit"
+                        class="text-2xl mt-1.5 font-semibold ml-2 truncate max-w-24 min-[350px]:max-w-48 min-[450px]:max-w-64 min-[700px]:max-w-fit"
                     >
                         {user.username}
                     </a>
