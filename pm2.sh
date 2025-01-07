@@ -10,6 +10,7 @@ npm run build
 
 export PORT=$PORT
 
+pm2 delete doubloon-leaderboard
 pm2 start build/index.js --name "$APP_NAME"
 pm2 save
 
