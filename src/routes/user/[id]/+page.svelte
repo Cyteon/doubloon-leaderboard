@@ -108,14 +108,19 @@
         </div>
 
         <footer class="text-center text-muted mb-6 mt-auto">
-            <a href="https://github.com/cyteon/doubloon-leaderboard" class="text-center text-blue">Repo</a>
-            | <a href="https://airtable.com/appTeNFYcUiYfGcR6/shro4hnLq63fT8psX" class="text-center text-blue">Airtable</a>
-            | {stats.opted_in} opted-in
-            | { 
-                stats.time_since_last_update/1000 < 60 
-                    ? `${(stats.time_since_last_update/1000).toFixed(1)} seconds ago` 
-                    : `${(stats.time_since_last_update/1000/60).toFixed(1)} minutes ago`
-            }
+            <div class="text-muted">
+                <a href="https://github.com/cyteon/doubloon-leaderboard" class="text-center text-blue">Repo</a>
+                | <a href="https://airtable.com/appTeNFYcUiYfGcR6/shro4hnLq63fT8psX" class="text-center text-blue">Airtable</a>
+                | {stats.opted_in} opted-in
+                | { 
+                    stats.time_since_last_update/1000 < 60 
+                        ? `${(stats.time_since_last_update/1000).toFixed(1)} seconds ago` 
+                        : `${(stats.time_since_last_update/1000/60).toFixed(1)} minutes ago`
+                }
+            </div>
+
+            <a href="https://github.com/cyteon" class="text-yellow hover:underline" target="_blank">Cyteon</a> © 2024-2025 / AGPL-3.0
+
         </footer>
     {:else}
         <div class="m-auto text-center">
