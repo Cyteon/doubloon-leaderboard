@@ -33,7 +33,20 @@ export async function GET({ url }) {
                 time_since_last_update: Date.now() - cachedAt
             });
         } else {
-            let data = await fetchData();
+            //let data = await fetchData();
+            let data = await client.get("doubloon_lb_persistent");
+
+            if (data) {
+                data = JSON.parse(data).data;
+
+                // data should be returned without waiting for this
+                Promise.all([
+                    fetchData(),
+                ]);
+            } else {
+                data = await fetchData();
+                data = data.data;
+            }
 
             if (sortBy === "total") {
                 data.sort((a, b) => b.total_doubloons - a.total_doubloons);

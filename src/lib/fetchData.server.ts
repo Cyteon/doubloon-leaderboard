@@ -50,10 +50,10 @@ export default async function fetchData() {
             client.set("doubloon_lb", JSON.stringify({
                 cachedAt: Date.now(),
                 data
-            }), { EX: 300 }),
+            }), { EX: 300 }).catch(console.error),
             client.set("doubloon_lb_persistent", JSON.stringify({
                 data
-            }))
+            })).catch(console.error)
         ]);
 
         return data;
@@ -63,6 +63,7 @@ export default async function fetchData() {
         const cache = await client.get("doubloon_lb_persistent");
 
         if (cache) {
+            console.error("using 'doubloon_lb_persistent'");
             const { data } = JSON.parse(cache);
 
             return data;
