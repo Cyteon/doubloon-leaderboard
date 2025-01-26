@@ -51,20 +51,18 @@
             
             const series = graph.addAreaSeries();
 
-            series.setData(graphPoints.map((point) => {
-                console.log(
-                    new Date(
-                        new Date(point.timestamp).getTime() - new Date(point.timestamp).getTimezoneOffset() * 60000
-                    )
-                )
-
+            let mapped = graphPoints.map((point) => {
                 return {
                     time: new Date(
                         new Date(point.timestamp).getTime() - new Date(point.timestamp).getTimezoneOffset() * 60000
                     ).getTime() / 1000,
                     value: point.doubloons
                 }
-            }));
+            });
+
+            mapped.sort((a, b) => a.time - b.time);
+
+            series.setData(mapped);
 
             graph.timeScale().fitContent();
         }
