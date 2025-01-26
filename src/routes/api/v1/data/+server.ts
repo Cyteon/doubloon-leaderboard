@@ -35,9 +35,13 @@ export async function GET({ url }) {
         } else {
             //let data = await fetchData();
             let data = await client.get("doubloon_lb_persistent");
+            let cachedAt = 0;
 
             if (data) {
-                data = JSON.parse(data).data;
+                const json = JSON.parse(data);
+                data = json.data;
+                cachedAt = json.cachedAt || 0;
+
 
                 // data should be returned without waiting for this
                 Promise.all([
@@ -60,7 +64,7 @@ export async function GET({ url }) {
                 users: data.slice(page * 25 - 25, page * 25),
                 pages: Math.ceil(data.length / 25),
                 opted_in: data.length,
-                time_since_last_update: 0
+                time_since_last_update: data.cachedAt || 0
             });
         }
     } catch (e) {

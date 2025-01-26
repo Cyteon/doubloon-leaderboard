@@ -22,9 +22,20 @@ export async function GET({ url }) {
     let data, cachedAt;
 
     if (!cache) {
-        data = await fetchData();
+        cache = await client.get("doubloon_lb_persistent");
 
-        cachedAt = Date.now();
+        if (!cache) {
+            data = await fetchData();
+            data = data.data;
+            cachedAt = Date.now();
+        }
+
+        data = JSON.parse(cache).data;
+        cachedAt = JSON.parse(cache).cachedAt;
+
+        Promise.all([
+            fetchData(),
+        ]);
     } else {
         data = JSON.parse(cache).data;
         cachedAt = JSON.parse(cache).cachedAt;

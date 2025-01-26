@@ -2,6 +2,8 @@ import client from "$lib/cache.server";
 import fs from "fs";
 
 export default async function fetchData() {
+    console.log("Fetching data from Airtable");
+
     const res = await fetch("https://airtable.com/v0.3/application/appTeNFYcUiYfGcR6/readForSharedPages?stringifiedObjectParams=%7B%22includeDataForPageId%22%3A%22pagblWwXt2nF2bRKu%22%2C%22shouldIncludeSchemaChecksum%22%3Atrue%2C%22expectedPageLayoutSchemaVersion%22%3A26%2C%22shouldPreloadQueries%22%3Atrue%2C%22shouldPreloadAllPossibleContainerElementQueries%22%3Atrue%2C%22urlSearch%22%3A%22iyC4S%253Asort%3DeyJwZWxyRDBBVmZJU282c0RGbCI6eyJjb2x1bW5JZCI6ImZsZHh0Y3h2T0FyQ1JTYzZKIiwiYXNjZW5kaW5nIjpmYWxzZX19%22%2C%22includeDataForExpandedRowPageFromQueryContainer%22%3Atrue%2C%22includeDataForAllReferencedExpandedRowPagesInLayout%22%3Atrue%2C%22navigationMode%22%3A%22view%22%7D&requestId=reqdw1usa3w2U5EDZ&accessPolicy=%7B%22allowedActions%22%3A%5B%7B%22modelClassName%22%3A%22page%22%2C%22modelIdSelector%22%3A%22pagblWwXt2nF2bRKu%22%2C%22action%22%3A%22read%22%7D%2C%7B%22modelClassName%22%3A%22application%22%2C%22modelIdSelector%22%3A%22appTeNFYcUiYfGcR6%22%2C%22action%22%3A%22readForSharedPages%22%7D%2C%7B%22modelClassName%22%3A%22application%22%2C%22modelIdSelector%22%3A%22appTeNFYcUiYfGcR6%22%2C%22action%22%3A%22readSignedAttachmentUrls%22%7D%5D%2C%22shareId%22%3A%22shro4hnLq63fT8psX%22%2C%22applicationId%22%3A%22appTeNFYcUiYfGcR6%22%2C%22generationNumber%22%3A0%2C%22expires%22%3A%222025-02-13T00%3A00%3A00.000Z%22%2C%22signature%22%3A%222e914abcd764855797b77d20b9ec093a0475e76b32b1549aa65ad558df8529e8%22%7D", {
         "credentials": "include",
         "headers": {
@@ -52,9 +54,12 @@ export default async function fetchData() {
                 data
             }), { EX: 300 }).catch(console.error),
             client.set("doubloon_lb_persistent", JSON.stringify({
-                data
+                data,
+                cachedAt: Date.now()
             })).catch(console.error)
         ]);
+
+        console.log("Fetched data from Airtable, all went good");
 
         return data;
     } else {
@@ -63,7 +68,7 @@ export default async function fetchData() {
         const cache = await client.get("doubloon_lb_persistent");
 
         if (cache) {
-            console.error("using 'doubloon_lb_persistent'");
+            console.error("Using cache: 'doubloon_lb_persistent'");
             const { data } = JSON.parse(cache);
 
             return data;
@@ -71,11 +76,18 @@ export default async function fetchData() {
             console.error("We are so fucking cooked.");
             console.error("imma try to use silly cache.json, if thats gone we cooked for real");
 
-            const cache = await fs.promises.readFile("cache.json", "utf-8");
+            try {
+                const cache = await fs.promises.readFile("cache.json", "utf-8");
 
-            const { data } = JSON.parse(cache);
+                const { data } = JSON.parse(cache);
 
-            return data;
+                return data;
+            } catch (e) {
+                console.error("NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+                console.error(e);
+
+                return [];
+            }
         }
     }
 }
