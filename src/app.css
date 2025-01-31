@@ -1,9 +1,19 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+@font-face {
+    font-family: 'Phantom Sans';
+    src: url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Regular.woff')
+        format('woff'),
+      url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Regular.woff2')
+        format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
 
 * {
-    font-family: "Noto Sans", serif;
+    font-family: "Phantom Sans", serif;
     @apply text-text;
 }

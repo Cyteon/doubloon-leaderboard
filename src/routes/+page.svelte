@@ -209,8 +209,8 @@
 
     <footer class="text-center text-muted mb-6 mt-auto">
         <div class="text-muted">
-            <a href="https://github.com/cyteon/doubloon-leaderboard" class="text-center text-blue">Repo</a>
-            | <a href="https://airtable.com/appTeNFYcUiYfGcR6/shro4hnLq63fT8psX" class="text-center text-blue">Airtable</a>
+            <a href="https://github.com/cyteon/doubloon-leaderboard" class="text-blue hover:underline">Repo</a>
+            | <a href="https://airtable.com/appTeNFYcUiYfGcR6/shro4hnLq63fT8psX" class="text-blue hover:underline">Airtable</a>
             | {data.opted_in} opted-in
             | { 
                 data.time_since_last_update/1000 < 60 
