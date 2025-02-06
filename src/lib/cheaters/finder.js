@@ -33,8 +33,8 @@ const res = fetch("https://airtable.com/v0.3/application/appTeNFYcUiYfGcR6/readF
             let cheaters = [];
             let checked = 0;
 
-            const ratelimit = 60 / 100 * 1000;
-            console.log(`Doing ${(60 / 60 / ratelimit * 1000).toFixed(1)} reqs/sec (${60 / ratelimit * 1000} reqs/min) - ETA: ${(Object.keys(docs).length / (100 / 60) / 60).toFixed(1)} minutes`);
+            const ratelimit = 60 / 150 * 1000;
+            console.log(`Doing ${(60 / 60 / ratelimit * 1000).toFixed(1)} reqs/sec (${60 / ratelimit * 1000} reqs/min) - ETA: ${(Object.keys(docs).length / (150 / 60) / 60).toFixed(1)} minutes`);
             console.log(`Checking ${Object.keys(docs).length} users\n`);
 
             for (const docId in docs) {
