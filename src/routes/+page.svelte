@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+    import { onMount } from "svelte";
+    import cheaters from "$lib/cheaters/cheaters.json";
 
     let data = []
 
@@ -70,8 +71,6 @@
 
         i = 0;
     }
-
-    const cheaters = [ "AlphastT101", "SamChan23267", "JeevanKoirala" ];
 </script>
 
 <svelte:head>
@@ -176,7 +175,7 @@
                         <img src="/slack.svg" class="my-auto" alt="Slack" height="24" width="24">
                     </a>
                     <p class="ml-auto text-2xl my-auto font-semibold flex">
-                        {#if cheaters.includes(user.username)}
+                        {#if cheaters.includes(user.id)}
                             <span class="text-muted text-lg my-auto mr-4">(cheater)</span>
                         {/if}
                         <span class="my-auto mr-1">{parseInt(
