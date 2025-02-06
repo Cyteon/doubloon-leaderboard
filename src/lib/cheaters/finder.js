@@ -33,8 +33,8 @@ const res = fetch("https://airtable.com/v0.3/application/appTeNFYcUiYfGcR6/readF
             let cheaters = [];
             let checked = 0;
 
-            const ratelimit = 100 / 60 * 1000;
-            console.log(`Doing ${(ratelimit / 1000).toFixed(1)} reqs/sec (${ratelimit / 1000 * 60} reqs/min) - ETA: ${(Object.keys(docs).length / (100 / 60) / 60).toFixed(1)} minutes`);
+            const ratelimit = 60 / 100 * 1000;
+            console.log(`Doing ${(60 / 60 / ratelimit * 1000).toFixed(1)} reqs/sec (${60 / ratelimit * 1000} reqs/min) - ETA: ${(Object.keys(docs).length / (100 / 60) / 60).toFixed(1)} minutes`);
             console.log(`Checking ${Object.keys(docs).length} users\n`);
 
             for (const docId in docs) {
@@ -53,13 +53,14 @@ const res = fetch("https://airtable.com/v0.3/application/appTeNFYcUiYfGcR6/readF
                         res2.json().then((json) => {
                             if (json?.user && json.user.deleted) {
                                 console.log(`Cheater found: ${json.user.name} | ${doc.cellValuesByColumnId.fldOVlRkhZklVMoqF} | STINKYYYYYYYYYYYYYYYYYYYY`);
+
                                 cheaters.push(json.user.id);
                             } else {
                                 console.log(`Not a cheater: ${json.user?.name} | ${doc.cellValuesByColumnId.fldOVlRkhZklVMoqF}`);
                             }
     
                             checked++;
-                            console.log(`Checked ${checked}/${Object.keys(docs).length} users (${Math.round(checked / Object.keys(docs).length * 100)}%)\n`);
+                            console.log(`Checked ${checked}/${Object.keys(docs).length} users (${Math.round(checked / Object.keys(docs).length * 100)}%) | ${cheaters.length} cheaters found\n`);
                         }).catch((err) => { console.error("Error parsing JSON (2)", err); })
                     } else {
                         res2.text().then((text) => { console.error("Failed to fetch user info from Slack", text); })
