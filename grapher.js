@@ -50,7 +50,11 @@ setInterval(async () => {
             for (const docId in docs) {
                 const doc = docs[docId];
 
-                await sql`INSERT INTO doubloons (id, doubloons) VALUES (${doc.cellValuesByColumnId.fldQiUhwbhQ2Lvrm5}, ${parseInt(doc.cellValuesByColumnId.fld4Qofv5LMGtlFlp)});`
+                if (!doc.cellValuesByColumnId.fldQiUhwbhQ2Lvrm5) {
+                    continue;
+                }
+
+                await sql`INSERT INTO doubloons (id, doubloons) VALUES (${doc.cellValuesByColumnId.fldQiUhwbhQ2Lvrm5}, ${parseInt(doc.cellValuesByColumnId.fld4Qofv5LMGtlFlp || 0)});`
             }
         } else {
             console.error("Failed to fetch data from Airtable, ggs.");
