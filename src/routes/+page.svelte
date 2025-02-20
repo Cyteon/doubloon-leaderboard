@@ -93,10 +93,6 @@
         <div class="flex flex-col md:flex-row mb-4">
             <div>
                 <h2 class="text-4xl font-semibold">Leaderboard</h2>
-                <p class="text-lg text-muted mt-2 mb-2 md:mt-0">
-                    Opt-in/out at
-                    <a href="https://highseas.hackclub.com/signpost" class="text-blue">The Signpost</a>!
-                </p>
             </div>
             <div class="md:ml-auto">
                 <div class="flex flex-row-reverse h-fit md:flex-row">
