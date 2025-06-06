@@ -4,7 +4,7 @@ Not much to type here, this is just a nice little leaderboard of the people with
 
 ## How does it work?
 
-There are two sorting modes, current doubloons, all-time doubloons (all doubloons u have ever earned) and spent doubloons \
+There are three sorting modes, current doubloons, all-time doubloons (all doubloons u have ever earned) and spent doubloons \
 You can also search for users, and they will appear if they are opted into the leaderboard \
 Thanks to [@taciturnaxolotl](https://github.com/taciturnaxolotl) for implementing this on the signpost in PR https://github.com/hackclub/high-seas/pull/997
 
